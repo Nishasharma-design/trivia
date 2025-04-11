@@ -22,7 +22,7 @@ public class QuizResultEntity {
     private LocalDate datePlayed;
 
     @OneToMany(mappedBy = "quizResult", cascade = CascadeType.ALL)
-    private List<QuestionAttemptedEntity> questionsAttempted = new ArrayList<>();
+    private List<QuestionAttemptedEntity> questions = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -48,12 +48,12 @@ public class QuizResultEntity {
         this.datePlayed = datePlayed;
     }
 
-    public List<QuestionAttemptedEntity> getQuestionsAttempted() {
-        return questionsAttempted;
+    public List<QuestionAttemptedEntity> getQuestions() {
+        return questions;
     }
 
-    public void setQuestionsAttempted(List<QuestionAttemptedEntity> questionsAttempted) {
-        this.questionsAttempted = questionsAttempted;
+    public void setQuestions(List<QuestionAttemptedEntity> questions) {
+        this.questions = questions;
     }
 
 
