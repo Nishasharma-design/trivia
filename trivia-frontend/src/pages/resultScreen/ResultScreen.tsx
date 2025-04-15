@@ -1,36 +1,39 @@
 import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "../../redux/store";
-import { useLocation, useNavigate } from "react-router-dom";
 import { resetGame } from "../../redux/quizSlice";
 
 import classes from './ResultScreen.module.scss';
 
 import axios from "axios";
-import { Difficulty } from "../../resource/quiz";
+import { useNavigate } from "react-router-dom";
+
 
 const ResultScreen = () => {
     const score = useSelector((state: RootState) => state.quiz.score);
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    
-    const totalQuestions = 10;
 
-    const location = useLocation();
-    const difficulty = location.state?.difficulty as Difficulty;
+    
      
-     const submitResults = async () => {
+    const submitResults = async () => {
+        const today = new Date().toISOString().split("T")[0]; 
+    
         try {
             await axios.post('http://localhost:8080/api/quiz', {
                 score,
-                total_questions: totalQuestions,
-                difficulty,
+                datePlayed: today,
+                questions: [],
             });
             console.log("Quiz results submitted successfully");
         } catch (error) {
             console.error("Error submitting quiz results:", error);
         }
     };
-
+    
+    if (score > 0) {
+        submitResults();
+    }
+    
    if (score > 0) {
     submitResults();
    }
