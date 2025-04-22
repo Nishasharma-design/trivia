@@ -7,8 +7,12 @@ public class QuestionAttemptedDTO {
   private String submittedAnswer;
   private String correctAnswer;
   private boolean isFailed;
-
   private boolean isArchived;
+
+ 
+ 
+
+  
 
   public String getQuestionText() {
     return questionText;

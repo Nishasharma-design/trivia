@@ -1,5 +1,6 @@
 package com.trivia.trivia_project.triviaProject.QuestionAttempted;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.trivia.trivia_project.triviaProject.QuizResult.QuizResultEntity;
 
 import jakarta.persistence.*;
@@ -10,7 +11,8 @@ public class QuestionAttemptedEntity {
     
 @Id
 @GeneratedValue(strategy = GenerationType.IDENTITY)
-private Long id;
+@Column(name = "id")
+private Long questionId;
 
 private String questionText;
 
@@ -22,17 +24,11 @@ private boolean isFailed;
 
 private boolean isArchived;
 
-@ManyToOne
+@ManyToOne(cascade = CascadeType.PERSIST)
 @JoinColumn(name = "quiz_result_id")
+@JsonBackReference
 private QuizResultEntity quizResult;
 
-public Long getId() {
-    return id;
-}
-
-public void setId(Long id) {
-    this.id = id;
-}
 
 public String getQuestionText() {
     return questionText;
@@ -80,6 +76,14 @@ public QuizResultEntity getQuizResult() {
 
 public void setQuizResult(QuizResultEntity quizResult) {
     this.quizResult = quizResult;
+}
+
+public Long getQuestionId() {
+    return questionId;
+}
+
+public void setQuestionId(Long questionId) {
+    this.questionId = questionId;
 }
 
 }

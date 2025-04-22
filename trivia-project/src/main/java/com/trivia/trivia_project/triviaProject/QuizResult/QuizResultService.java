@@ -13,6 +13,8 @@ import com.trivia.trivia_project.triviaProject.QuestionAttempted.QuestionAttempt
 import com.trivia.trivia_project.triviaProject.QuestionAttempted.QuestionAttemptedRepository;
 import com.trivia.trivia_project.triviaProject.QuizSubmission.QuizSubmissionDTO;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class QuizResultService {
     
@@ -25,24 +27,32 @@ public class QuizResultService {
     @Autowired
     private ModelMapper modelMapper;
 
- // i am saving submitted quiz in Database
-    public void submitQuiz(QuizSubmissionDTO quizSubmissionDTO) {
+ @Transactional
+  public void submitQuiz(QuizSubmissionDTO quizSubmissionDTO) {
 
         // creating new QuizResult entity 
      QuizResultEntity quizEntity = new QuizResultEntity();
 
      quizEntity.setScore(quizSubmissionDTO.getScore());
 
-     quizEntity.setDatePlayed(LocalDate.now());
+     quizEntity.setDatePlayed(quizSubmissionDTO.getDatePlayed() != null ? quizSubmissionDTO.getDatePlayed() : LocalDate.now());
 
-   // converting each QuestionAttempted DTO to entity and attach to QuizResult
+   // heree i am converting each QuestionAttempted DTO to entity and attach to QuizResult
    List<QuestionAttemptedEntity> questionEntities = quizSubmissionDTO.getQuestions().stream()
                .map(dto -> modelMapper.map(dto, QuestionAttemptedEntity.class))
                .collect(Collectors.toList());
 
     for (QuestionAttemptedEntity q : questionEntities) {
         q.setQuizResult(quizEntity);
+    
+
+    if (!q.getSubmittedAnswer().trim().equalsIgnoreCase(q.getCorrectAnswer().trim())) {
+        q.setFailed(true);
+    } else {
+        q.setFailed(false);
     }
+    q.setArchived(false);
+}
 
     quizEntity.setQuestions(questionEntities);
 
@@ -66,7 +76,7 @@ public class QuizResultService {
         QuestionAttemptedEntity question = questionAttemptedRepository.findById(questionId)
           .orElseThrow(() -> new NotFoundException("Question not found"));
 
-      if (question.getCorrectAnswer().equalsIgnoreCase(newAnswer)) {
+      if (question.getCorrectAnswer().trim().equalsIgnoreCase(newAnswer.trim())) {
         question.setArchived(true);
         question.setFailed(false);
       }

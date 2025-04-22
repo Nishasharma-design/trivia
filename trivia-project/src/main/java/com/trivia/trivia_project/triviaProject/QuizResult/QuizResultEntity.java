@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import com.trivia.trivia_project.triviaProject.QuestionAttempted.QuestionAttemptedEntity;
 
 import jakarta.persistence.*;
@@ -22,6 +24,7 @@ public class QuizResultEntity {
     private LocalDate datePlayed;
 
     @OneToMany(mappedBy = "quizResult", cascade = CascadeType.ALL)
+    @JsonIgnoreProperties("quizResult")
     private List<QuestionAttemptedEntity> questions = new ArrayList<>();
 
     public Long getId() {

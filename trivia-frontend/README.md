@@ -1,54 +1,56 @@
-# React + TypeScript + Vite
+#### REQUIREMENTS/PURPOSE
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## MVP for TRIVIA QUIZ BACKEND
+- When the user completes a quiz it gets submitted to the API that keeps track of all game details:
+score
+date played
+questions answered
+submitted answer for each question
+correct answer for each question
+if a question was failed or not
+One of the API endpoints should allow filtering questions by failed
+On the frontend, the user should be able to view questions that they answered wrong
+They should be able to attempt those questions again
+If they answer the question correct, it should get archived in the database
 
-Currently, two official plugins are available:
+## MVP for TRIVIA QUIZ FRONTEND
+- Create an interface that will allow a user to choose level of difficulty and start a new game
+When game starts, the user should see a question card with 4 possible answers
+If they answer the question correct, a new question should appear on the screen
+If their answer is incorrect, the game is over
+Display the score (number of question answered correctly) at the end of each game
+Add a "Play Again" button under the score
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## STACK USED 
+#### For Backend
+- Language - Java
+- Framework - Spring Boot
+- ORM - Hibernate
+- ModelMapper for DTO Mapping
 
-## Expanding the ESLint configuration
+#### For Frontend
+- React Framework
+- Typescript
+- Axios 
+- React Hook Form
+- Redux for global state management
+- SCSS for styling
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## DESIGN GOALS
+- I wanted to keep it simple and clear. 
+- The backend handles all logic and data, while the frontend focuses on user interaction. 
+- I followed a layered structure to keep things organized and easy to maintain.
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+## FEATURES
+- Project allows users to start quiz
+- displays questions on question screen
+- each question has 4 options and user has to choose the correct option to move to the next question else quiz ends with displaying final score
+- project gives an opportunity to replay quiz 
+- it does give an opportunity to retry failed question
+- backend displays results of quizzes played by the user
+- backend displays failed-questions
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## What did i struggle with?
+- Handling the user answers and saving the final result correctly was tricky. Connecting the frontend and backend smoothly also took some trial and error.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```

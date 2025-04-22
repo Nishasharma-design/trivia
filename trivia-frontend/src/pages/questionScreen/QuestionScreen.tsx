@@ -1,69 +1,53 @@
-
-import { useDispatch, useSelector } from "react-redux"
-import { RootState } from "../../redux/store";
+import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { answerQuestions, resetGame } from "../../redux/quizSlice";
+import {
+  selectQuestions,
+  selectCurrentQuestionIndex,
+  answerQuestions,
+} from "../../redux/quizSlice";
+import classes from "./QuestionScreen.module.scss";
 
-import classes from './QuestionScreen.module.scss';
+function QuestionScreen() {
+  const questions = useSelector(selectQuestions);
+  const currentQuestionIndex = useSelector(selectCurrentQuestionIndex);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-const QuestionScreen = () => {
-    const dispatch = useDispatch();
-     const navigate = useNavigate();
+  const currentQuestion = questions[currentQuestionIndex];
 
-     const { questions, currentQuestionIndex } = useSelector(
-        (state: RootState) => state.quiz
-     );
+  const handleAnswerClick = (selected: string) => {
+    const isCorrect = selected === currentQuestion.correctAnswer;
 
-     const currentQuestion = questions[currentQuestionIndex];
+    dispatch(answerQuestions({ isCorrect, submittedAnswer: selected }));
 
+    const nextIndex = currentQuestionIndex + 1;
+    const isLast = nextIndex >= questions.length || !isCorrect;
 
-     if (!currentQuestion) {
-        return (
-            <div className={classes.question_screen}>
-                <p>No questions found.</p>
-                <button
-                 onClick={() => {
-                    dispatch(resetGame());
-                    navigate("/");
-                 }}>
-                    Back to Home
-                 </button>
-            </div>
-        );
-     }
+    if (isLast) {
+      navigate("/result");
+    }
+  };
 
+  if (!currentQuestion) return <div>No question found</div>;
 
-     const answers = [
-        ...currentQuestion.incorrect_answers,
-        currentQuestion.correct_answer,
-     ].sort(() => Math.random() - 0.5);
+  const options = [...currentQuestion.incorrectAnswers, currentQuestion.correctAnswer].sort();
 
-     const handleAnswerClick = (selected: string) => {
-        const isCorrect = selected === currentQuestion.correct_answer;
-        dispatch(answerQuestions(isCorrect));
-
-        const nextIndex = currentQuestionIndex + 1;
-        const isLast = nextIndex >= questions.length || !isCorrect;
-
-        if (isLast) {
-            navigate("/result");
-        }
-     };
-
-     return (
-        <div className={classes.questionContainer}>
-            <h2 dangerouslySetInnerHTML={{ __html: currentQuestion.question }} />
-            <div className={classes.answers}>
-                {answers.map((ans, index) => (
-                    <button
-                    key={index}
-                    onClick={() => handleAnswerClick(ans)}
-                    dangerouslySetInnerHTML={{ __html: ans }}
-                    />
-                ))}
-            </div>
-        </div>
-     );
-};
+  return (
+    <div className={classes.container}>
+      <h1>Question {currentQuestionIndex + 1}</h1>
+      <h2 dangerouslySetInnerHTML={{ __html: currentQuestion.question }} />
+      <div className={classes.options}>
+        {options.map((opt, i) => (
+          <button
+            key={i}
+            className={classes.button}
+            onClick={() => handleAnswerClick(opt)}
+            dangerouslySetInnerHTML={{ __html: opt }}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
 
 export default QuestionScreen;

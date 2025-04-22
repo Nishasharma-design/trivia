@@ -6,8 +6,11 @@ import java.util.List;
 import com.trivia.trivia_project.triviaProject.QuestionAttempted.QuestionAttemptedDTO;
 
 public class QuizSubmissionDTO {
-    
+
+   
    private int score;
+   
+
    private LocalDate datePlayed;
 
    private List<QuestionAttemptedDTO> questions;

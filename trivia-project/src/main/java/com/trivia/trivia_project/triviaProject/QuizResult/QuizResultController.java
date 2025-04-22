@@ -30,7 +30,7 @@ public class QuizResultController {
         return quizResultService.getFailedQuestions();
     }
 
-
+    @PutMapping("/retry-question/{id}")
     public void retryQuestion(@PathVariable Long id, @RequestParam String newAnswer) {
         quizResultService.retryFailedQuestion(id, newAnswer);
     }

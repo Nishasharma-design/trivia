@@ -1,6 +1,7 @@
 package com.trivia.trivia_project.triviaProject.QuizResult;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.trivia.trivia_project.triviaProject.QuestionAttempted.QuestionAttemptedDTO;
@@ -10,7 +11,7 @@ public class QuizResultDTO {
 private Long id;
 private int score;
 private LocalDate datePlayed;
-private List<QuestionAttemptedDTO> questions;
+private List<QuestionAttemptedDTO> questions = new ArrayList<>();
 public Long getId() {
     return id;
 }
