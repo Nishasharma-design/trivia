@@ -14,14 +14,14 @@ const ResultScreen = () => {
 
   const submitResults = async () => {
     const today = new Date().toISOString().split("T")[0];
-
+    
     const submittedData = questions.map(q => ({
       questionText: q.question,
       questionId: q.id,
       submittedAnswer: q.submittedAnswer,
       correctAnswer: q.correctAnswer,
       isFailed: q.submittedAnswer.trim().toLowerCase() !== q.correctAnswer.trim().toLowerCase(),
-  isArchived: false
+  isArchived: q.submittedAnswer.trim().toLowerCase() === q.correctAnswer.trim().toLowerCase(),
     }));
 
     try {
