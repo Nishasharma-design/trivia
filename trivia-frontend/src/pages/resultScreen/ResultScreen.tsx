@@ -46,7 +46,6 @@ const ResultScreen = () => {
   const handleRestart = () => {
     
     dispatch(setQuestions([])); 
-    dispatch({ type: 'quiz/resetScore' }); 
     navigate('/');
   };
 
